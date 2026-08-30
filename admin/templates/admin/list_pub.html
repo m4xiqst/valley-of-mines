@@ -1,0 +1,12 @@
+{% extends 'admin/base_admin.html' %}
+{% block content %}
+    {{ super() }}
+    <ul>
+        {% for post in posts %}
+        <li>
+            <h2> {{ post.post_title }}</h2>
+            <p> {{ post.post_content[:500] | striptags}}</p>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

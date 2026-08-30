@@ -1,0 +1,358 @@
+/* ============================================================
+   АДМИН-ПАНЕЛЬ — ОТДЕЛЬНЫЕ СТИЛИ
+   Отличаются от основного сайта цветами, шрифтами и атмосферой
+   ============================================================ */
+
+/* ===== ОБЩИЙ ФОН ===== */
+body {
+    background: #0d0a08;
+    background-image: 
+        radial-gradient(ellipse at 20% 50%, rgba(40, 20, 10, 0.4) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(20, 10, 30, 0.3) 0%, transparent 60%);
+    color: #c4a882;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+/* ===== ШАПКА АДМИНКИ ===== */
+.admin-header {
+    background: #0f0a08;
+    border-bottom: 2px solid #6b4c2a;
+    padding: 15px 25px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    border-radius: 0 0 8px 8px;
+}
+
+.admin-header h1 {
+    font-family: 'Uncial Antiqua', 'Georgia', serif;
+    font-size: 1.8em;
+    color: #d4b896;
+    margin: 0;
+    letter-spacing: 3px;
+}
+
+.admin-header h1 span {
+    color: #b8860b;
+}
+
+/* ===== МЕНЮ АДМИНКИ ===== */
+.admin-menu {
+    list-style: none;
+    display: flex;
+    gap: 5px;
+    padding: 0;
+    margin: 0;
+    background: #1a1210;
+    border: 1px solid #3a2a1a;
+    border-radius: 6px;
+    padding: 8px 15px;
+    flex-wrap: wrap;
+}
+
+.admin-menu li {
+    display: inline-block;
+}
+
+.admin-menu li a {
+    display: block;
+    padding: 8px 20px;
+    color: #8a7a6a;
+    text-decoration: none;
+    font-size: 0.95em;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.admin-menu li a:hover {
+    color: #e8d5b8;
+    background: rgba(184, 134, 11, 0.15);
+}
+
+.admin-menu li a.active {
+    color: #b8860b;
+    background: rgba(184, 134, 11, 0.1);
+    border-bottom: 2px solid #b8860b;
+}
+
+/* ===== КОНТЕЙНЕР ===== */
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* ===== ПАНЕЛИ ===== */
+.admin-panel {
+    background: #1a1210;
+    border: 1px solid #3a2a1a;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6);
+}
+
+.admin-panel::before {
+    content: "";
+    display: block;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #b8860b, transparent);
+    margin-bottom: 15px;
+}
+
+/* ===== КАРТОЧКИ СТАТИСТИКИ ===== */
+.admin-stats {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+}
+
+.admin-stat-card {
+    background: #0f0a08;
+    border: 1px solid #3a2a1a;
+    border-radius: 8px;
+    padding: 20px 30px;
+    flex: 1;
+    min-width: 150px;
+    text-align: center;
+    transition: border-color 0.3s ease;
+}
+
+.admin-stat-card:hover {
+    border-color: #b8860b;
+}
+
+.admin-stat-card .number {
+    font-size: 2.5em;
+    color: #b8860b;
+    font-family: 'Uncial Antiqua', 'Georgia', serif;
+}
+
+.admin-stat-card .label {
+    color: #8a7a6a;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+    margin-top: 5px;
+}
+
+/* ===== ТАБЛИЦЫ ===== */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.admin-table th {
+    background: #2a1f1a;
+    color: #b8860b;
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #4a3520;
+}
+
+.admin-table td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #2a1f1a;
+    color: #c4a882;
+}
+
+.admin-table tr:hover td {
+    background: #1f1612;
+}
+
+/* ===== КНОПКИ ===== */
+.admin-btn {
+    padding: 6px 16px;
+    background: transparent;
+    border: 1px solid #4a3520;
+    color: #c4a882;
+    font-family: 'Georgia', serif;
+    font-size: 0.85em;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.admin-btn:hover {
+    background: rgba(184, 134, 11, 0.15);
+    border-color: #b8860b;
+    color: #e8d5b8;
+}
+
+.admin-btn-danger {
+    border-color: #8b1a1a;
+    color: #8b1a1a;
+}
+
+.admin-btn-danger:hover {
+    background: rgba(139, 26, 26, 0.2);
+    border-color: #8b1a1a;
+    color: #ef9a9a;
+}
+
+.admin-btn-success {
+    border-color: #4caf50;
+    color: #4caf50;
+}
+
+.admin-btn-success:hover {
+    background: rgba(76, 175, 80, 0.15);
+    border-color: #4caf50;
+    color: #81c784;
+}
+
+/* ===== ФОРМЫ ===== */
+.admin-form .form-group {
+    margin-bottom: 18px;
+}
+
+.admin-form label {
+    display: block;
+    color: #8a7a6a;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.admin-form input,
+.admin-form textarea,
+.admin-form select {
+    width: 100%;
+    padding: 10px 14px;
+    background: #0f0a08;
+    border: 1px solid #3a2a1a;
+    color: #c4a882;
+    font-family: 'Georgia', serif;
+    font-size: 1em;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.admin-form input:focus,
+.admin-form textarea:focus,
+.admin-form select:focus {
+    outline: none;
+    border-color: #b8860b;
+    box-shadow: 0 0 20px rgba(184, 134, 11, 0.05);
+}
+
+.admin-form textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.admin-form .invalid {
+    border-color: #8b1a1a !important;
+    box-shadow: 0 0 20px rgba(139, 26, 26, 0.15);
+}
+
+.invalid-feedback {
+    color: #ef9a9a;
+    font-size: 0.85em;
+    margin-top: 5px;
+    display: block;
+}
+
+/* ===== FLASH-СООБЩЕНИЯ ===== */
+.admin-flash {
+    padding: 12px 18px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border-left: 4px solid;
+}
+
+.admin-flash.success {
+    background: #1a2a1a;
+    border-left-color: #4caf50;
+    color: #a5d6a7;
+}
+
+.admin-flash.error {
+    background: #2a1a1a;
+    border-left-color: #8b1a1a;
+    color: #ef9a9a;
+}
+
+.admin-flash.info {
+    background: #1a1a2a;
+    border-left-color: #2196f3;
+    color: #90caf9;
+}
+
+/* ===== СПИСОК ПОСТОВ (АДМИНКА) ===== */
+.admin-post-list {
+    list-style: none;
+    padding: 0;
+}
+
+.admin-post-list li {
+    background: #0f0a08;
+    border: 1px solid #2a1f1a;
+    border-radius: 6px;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    transition: border-color 0.3s ease;
+}
+
+.admin-post-list li:hover {
+    border-color: #4a3520;
+}
+
+.admin-post-list .post-title {
+    font-size: 1.1em;
+    color: #e8d5b8;
+    text-decoration: none;
+}
+
+.admin-post-list .post-title:hover {
+    color: #b8860b;
+}
+
+.admin-post-list .post-meta {
+    color: #8a7a6a;
+    font-size: 0.85em;
+    margin-top: 5px;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 768px) {
+    .admin-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .admin-menu {
+        justify-content: center;
+    }
+
+    .admin-menu li a {
+        padding: 6px 12px;
+        font-size: 0.85em;
+    }
+
+    .admin-stats {
+        flex-direction: column;
+    }
+
+    .admin-table {
+        font-size: 0.85em;
+    }
+
+    .admin-table th,
+    .admin-table td {
+        padding: 6px 10px;
+    }
+}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — Долина Рудников</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="error-404-wrapper">
+        <div class="panel error-404-box">
+            <div class="error-404-icon">⚔</div>
+            <h1 class="error-404-code">404</h1>
+            <h2 class="error-404-title">Ты забрёл в неизведанные земли</h2>
+            <p class="error-404-desc">
+                Эта страница потерялась в туманах Долины Рудников.<br>
+                Возможно, её съел мракорис или похитили орки....
+            </p>
+            <div class="error-404-actions">
+                <a href="{{ url_for('index') }}" class="btn btn-gold">🏠 Вернуться в Долину</a>
+                <a href="{{ url_for('contact_us') }}" class="btn">📨 Связаться с нами</a>
+            </div>
+            <div class="error-404-quote">
+                "В Долине нет ничего страшнее, чем заблудиться без карты."
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+{{super()}}
+<div class="panel" style="max-width: 600px; margin: 0 auto;">
+    <h2 style="text-align: center; border: none;">⚔ Личная карточка</h2>
+
+    <!-- ===== БЛОК АВАТАРКИ ===== -->
+    <div style="text-align: center; margin: 20px 0;">
+        <!-- Отображение аватарки -->
+        <div style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--accent-gold); margin: 0 auto; overflow: hidden; background: var(--bg-input); display: flex; align-items: center; justify-content: center;">
+            {% if user.avatar %}
+                <img src="" alt="Аватар" style="width: 100%; height: 100%; object-fit: cover;">
+            {% else %}
+                <span style="font-size: 4em; color: var(--text-secondary);">👤</span>
+            {% endif %}
+        </div>
+
+        <!-- Форма загрузки аватарки -->
+        <form method="POST" action="{{ url_for('upload_avatar')}}" enctype="multipart/form-data" style="margin-top: 15px;">
+            <input type="file" name="avatar" accept="image/*" required style="color: var(--text-secondary); max-width: 200px;">
+            <button type="submit" class="btn btn-gold" style="margin-top: 5px;">📤 Загрузить</button>
+        </form>
+        <p style="color: var(--text-secondary); font-size: 0.75em; margin-top: 5px;">JPG, PNG, GIF до 5 МБ</p>
+    </div>
+
+    
+    <!-- ===== КНОПКА УДАЛЕНИЯ ===== -->
+    <form method="POST" action="{{ url_for('delete_avatar')}}" style="margin-top: 10px;">
+        <button type="submit" class="btn btn-blood" onclick="return confirm('Точно удалить аватарку?')">
+            🗑️ Удалить аватарку
+        </button>
+    </form>
+
+    <!-- ===== ПОЛЯ ПРОФИЛЯ ===== -->
+    <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 25px;">
+        
+        <!-- Имя -->
+        <div class="profile-field">
+            <label class="profile-label">👤 Имя</label>
+            <div class="profile-value">{{ user.user_login }}</div>
+        </div>
+        
+        <!-- Никнейм (позже) -->
+        <div class="profile-field">
+            <label class="profile-label">🏷️ Никнейм</label>
+            <div class="profile-value">Тут будет никнейм персонажа</div>
+        </div>
+        
+        <!-- Email -->
+        <div class="profile-field">
+            <label class="profile-label">📧 Email</label>
+            <div class="profile-value">{{ user.user_email }}</div>
+        </div>
+        
+        <!-- Телефон (позже) -->
+        <div class="profile-field">
+            <label class="profile-label">📱 Телефон</label>
+            <div class="profile-value">user.phone</div>
+        </div>
+        
+        <!-- Дата регистрации -->
+        <div class="profile-field">
+            <label class="profile-label">📅 Дата регистрации</label>
+            <div class="profile-value">{{ user.created_at.strftime('%d.%m.%Y') if user.created_at else 'Неизвестно' }}</div>
+        </div>
+    </div>
+
+    <!-- Кнопка редактирования (заглушка) -->
+    <div style="text-align: center; margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 25px;">
+        <button class="btn btn-gold" onclick="alert('Функция редактирования будет добавлена позже!')">
+            ✏️ Редактировать профиль
+        </button>
+    </div>
+</div>
+
+<!-- Дополнительная информация -->
+<div class="panel panel-dark" style="max-width: 600px; margin: 20px auto 0; text-align: center;">
+    <p style="color: var(--text-secondary); font-size: 0.9em;">
+        ⚔ Ты — часть Долины Рудников
+    </p>
+</div>
+{% endblock %}

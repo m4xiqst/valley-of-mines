@@ -1,0 +1,869 @@
+
+/* ============================================================
+   СБРОС СТИЛЕЙ БРАУЗЕРА (RESET)
+   ============================================================ */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+body {
+    line-height: 1;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote::before, blockquote::after,
+q::before, q::after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* Дополнительно: убираем стандартные стили у ссылок */
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Убираем стандартные стили у кнопок */
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+}
+
+/* Убираем стандартные стили у полей ввода */
+input, textarea, select {
+    font: inherit;
+    color: inherit;
+}
+
+/* Убираем стандартные стили у изображений */
+img {
+    display: block;
+    max-width: 100%;
+}
+
+/* Убираем стандартные маркеры у списков */
+ul, ol {
+    list-style: none;
+}
+
+/* Сброс для цитат */
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== ОСНОВНЫЕ СТИЛИ ===== */
+:root {
+    --bg-dark: #0a0705;
+    --bg-panel: #1a1210;
+    --bg-input: #2a1f1a;
+    --border-color: #4a3520;
+    --text-primary: #c4a882;
+    --text-secondary: #8a7a6a;
+    --text-light: #e8d5b8;
+    --accent-gold: #b8860b;
+    --accent-blood: #8b1a1a;
+    --shadow: rgba(0, 0, 0, 0.8);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-dark);
+    background-image: 
+        radial-gradient(ellipse at 20% 50%, rgba(60, 30, 20, 0.3) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 50%, rgba(30, 20, 50, 0.2) 0%, transparent 60%);
+    color: var(--text-primary);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 16px;
+    line-height: 1.7;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* ===== ШАПКА / ЗАГОЛОВКИ ===== */
+h1, h2, h3, h4 {
+    font-family: 'Uncial Antiqua', 'Georgia', serif;
+    font-weight: normal;
+    letter-spacing: 2px;
+    color: var(--text-light);
+    text-shadow: 0 0 20px rgba(184, 134, 11, 0.2);
+}
+
+h1 {
+    font-size: 3em;
+    text-align: center;
+    padding: 30px 0 10px;
+    border-bottom: 2px solid var(--border-color);
+    margin-bottom: 30px;
+    background: linear-gradient(180deg, #2a1f1a 0%, transparent 100%);
+}
+
+h1::after {
+    content: "⚔";
+    display: block;
+    font-size: 0.4em;
+    color: var(--accent-gold);
+    margin-top: 5px;
+}
+
+h2 {
+    font-size: 1.8em;
+    padding-left: 20px;
+    border-left: 4px solid var(--accent-gold);
+    margin: 30px 0 15px;
+}
+
+/* ===== ПАНЕЛИ И КАРТОЧКИ ===== */
+.panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+}
+
+.panel-dark {
+    background: #0d0907;
+    border-color: #3a2518;
+}
+
+/* ===== МЕНЮ (ГОРИЗОНТАЛЬНОЕ) ===== */
+.menu {
+    display: flex;              /* Горизонтальное расположение */
+    flex-wrap: wrap;           /* Перенос на новую строку если не влезают */
+    justify-content: center;   /* Выравнивание по центру */
+    gap: 5px;                  /* Расстояние между пунктами */
+    background: #1a1210;
+    border: 1px solid #4a3520;
+    border-radius: 8px;
+    padding: 10px 20px;
+    margin: 20px 0;
+    list-style: none;          /* Убираем маркеры (если используете ul) */
+}
+
+.menu a {
+    display: inline-block;     /* Чтобы работали padding */
+    color: #8a7a6a;
+    text-decoration: none;
+    padding: 10px 25px;
+    font-family: 'Georgia', serif;
+    font-size: 1.1em;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.menu a:hover {
+    color: #e8d5b8;
+    background: rgba(184, 134, 11, 0.15);
+}
+
+.menu a.active {
+    color: #b8860b;
+    background: rgba(184, 134, 11, 0.1);
+    border-bottom: 2px solid #b8860b;
+}
+
+/* ===== КНОПКИ ===== */
+.btn {
+    display: inline-block;
+    padding: 10px 30px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-family: 'Georgia', serif;
+    font-size: 1em;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+.btn:hover {
+    background: rgba(184, 134, 11, 0.15);
+    border-color: var(--accent-gold);
+    color: var(--text-light);
+    box-shadow: 0 0 30px rgba(184, 134, 11, 0.1);
+}
+
+.btn-gold {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+}
+
+.btn-gold:hover {
+    background: rgba(184, 134, 11, 0.2);
+    box-shadow: 0 0 40px rgba(184, 134, 11, 0.15);
+}
+
+.btn-blood {
+    border-color: var(--accent-blood);
+    color: var(--accent-blood);
+}
+
+.btn-blood:hover {
+    background: rgba(139, 26, 26, 0.2);
+    box-shadow: 0 0 40px rgba(139, 26, 26, 0.15);
+}
+
+/* ===== КАРТОЧКИ ПЕРСОНАЖЕЙ ===== */
+.character-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+}
+
+.character-card:hover {
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 30px rgba(184, 134, 11, 0.05);
+}
+
+.character-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--bg-input);
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5em;
+    flex-shrink: 0;
+}
+
+.character-info {
+    flex: 1;
+}
+
+.character-name {
+    font-size: 1.4em;
+    color: var(--text-light);
+    font-family: 'Uncial Antiqua', 'Georgia', serif;
+}
+
+.character-role {
+    color: var(--accent-gold);
+    font-size: 0.9em;
+    letter-spacing: 1px;
+}
+
+.character-desc {
+    color: var(--text-secondary);
+    font-size: 0.95em;
+    margin-top: 5px;
+}
+
+/* ===== ЛАГЕРЯ (ФРАКЦИИ) ===== */
+.faction-old {
+    border-left: 4px solid #8b7a5a;
+}
+
+.faction-new {
+    border-left: 4px solid #5a8b5a;
+}
+
+.faction-merc {
+    border-left: 4px solid #8b5a5a;
+}
+
+/* ===== ФОРМЫ ВВОДА ===== */
+input, textarea, select {
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 10px 15px;
+    font-family: 'Georgia', serif;
+    font-size: 1em;
+    border-radius: 4px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 20px rgba(184, 134, 11, 0.05);
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+label {
+    display: block;
+    margin: 15px 0 5px;
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    letter-spacing: 1px;
+}
+
+/* ===== СПИСОК ПОСТОВ ===== */
+.post {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 25px;
+    margin: 20px 0;
+    position: relative;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 15px;
+}
+
+.post-author {
+    font-family: 'Uncial Antiqua', 'Georgia', serif;
+    color: var(--text-light);
+    font-size: 1.2em;
+}
+
+.post-date {
+    color: var(--text-secondary);
+    font-size: 0.85em;
+}
+
+.post-content {
+    color: var(--text-primary);
+    line-height: 1.8;
+}
+
+.post-content p {
+    margin: 10px 0;
+}
+
+/* ===== БОКОВАЯ ПАНЕЛЬ ===== */
+.sidebar {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.sidebar-title {
+    font-family: 'Uncial Antiqua', 'Georgia', serif;
+    color: var(--text-light);
+    font-size: 1.2em;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* ===== СЕПАРАТОРЫ ===== */
+.separator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    color: var(--border-color);
+    margin: 30px 0;
+    font-size: 0.8em;
+    letter-spacing: 3px;
+}
+
+.separator::before,
+.separator::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+}
+
+/* ===== КВЕСТЫ / ЗАДАНИЯ ===== */
+.quest {
+    background: var(--bg-input);
+    border-left: 3px solid var(--accent-gold);
+    padding: 15px 20px;
+    margin: 10px 0;
+    border-radius: 0 4px 4px 0;
+}
+
+.quest-title {
+    color: var(--text-light);
+    font-size: 1.1em;
+}
+
+.quest-desc {
+    color: var(--text-secondary);
+    font-size: 0.95em;
+    margin-top: 5px;
+}
+
+/* ===== ЛОКАЦИИ ===== */
+.location {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    background-image: radial-gradient(ellipse at 30% 40%, rgba(60, 30, 20, 0.2) 0%, transparent 70%);
+}
+
+.location-name {
+    font-family: 'Uncial Antiqua', 'Georgia', serif;
+    color: var(--accent-gold);
+    font-size: 1.4em;
+}
+
+.location-desc {
+    color: var(--text-secondary);
+    margin-top: 8px;
+}
+
+/* ===== АНИМАЦИИ ===== */
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.flicker {
+    animation: flicker 3s infinite;
+}
+
+@keyframes glow {
+    0%, 100% { text-shadow: 0 0 10px rgba(184, 134, 11, 0.2); }
+    50% { text-shadow: 0 0 30px rgba(184, 134, 11, 0.4), 0 0 60px rgba(184, 134, 11, 0.1); }
+}
+
+.glow {
+    animation: glow 4s ease-in-out infinite;
+}
+
+/* ===== АДАПТИВ ===== */
+@media (max-width: 768px) {
+    body { padding: 10px; font-size: 15px; }
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.4em; }
+    .menu a { padding: 8px 15px; font-size: 0.95em; }
+    .character-card { flex-direction: column; text-align: center; }
+    .post-header { flex-direction: column; gap: 5px; text-align: center; }
+}
+
+
+/* ============================================================
+   FLASH-СООБЩЕНИЯ (ЯРКИЕ И ЗАМЕТНЫЕ)
+   ============================================================ */
+.flash-message {
+    padding: 18px 25px;
+    margin: 20px 0;
+    border-radius: 8px;
+    border: 2px solid;
+    font-family: 'Georgia', serif;
+    font-size: 1.1em;
+    font-weight: bold;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
+    animation: flashBlink 0.5s ease;
+    position: relative;
+}
+
+/* --- УСПЕХ (ЗЕЛЁНЫЙ) --- */
+.flash-message.success {
+    background: #1a3a1a;
+    border-color: #4caf50;
+    color: #a5d6a7;
+    text-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+    box-shadow: 0 0 40px rgba(76, 175, 80, 0.15);
+}
+.flash-message.success::before {
+    content: "✅ ";
+    font-size: 1.3em;
+}
+
+/* --- ОШИБКА (КРАСНЫЙ) --- */
+.flash-message.error {
+    background: #3a1a1a;
+    border-color: #f44336;
+    color: #ef9a9a;
+    text-shadow: 0 0 20px rgba(244, 67, 54, 0.3);
+    box-shadow: 0 0 40px rgba(244, 67, 54, 0.15);
+}
+.flash-message.error::before {
+    content: "❌ ";
+    font-size: 1.3em;
+}
+
+/* --- ПРЕДУПРЕЖДЕНИЕ (ОРАНЖЕВЫЙ) --- */
+.flash-message.warning {
+    background: #3a2a1a;
+    border-color: #ff9800;
+    color: #ffcc80;
+    text-shadow: 0 0 20px rgba(255, 152, 0, 0.3);
+    box-shadow: 0 0 40px rgba(255, 152, 0, 0.15);
+}
+.flash-message.warning::before {
+    content: "⚠️ ";
+    font-size: 1.3em;
+}
+
+/* --- ИНФОРМАЦИЯ (СИНИЙ) --- */
+.flash-message.info {
+    background: #1a2a3a;
+    border-color: #2196f3;
+    color: #90caf9;
+    text-shadow: 0 0 20px rgba(33, 150, 243, 0.3);
+    box-shadow: 0 0 40px rgba(33, 150, 243, 0.15);
+}
+.flash-message.info::before {
+    content: "📌 ";
+    font-size: 1.3em;
+}
+
+/* --- КНОПКА ЗАКРЫТИЯ (КРЕСТИК) --- */
+.flash-message .close-btn {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: currentColor;
+    font-size: 2em;
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    line-height: 1;
+    padding: 0 8px;
+}
+.flash-message .close-btn:hover {
+    opacity: 1;
+}
+
+/* --- АНИМАЦИЯ ПОЯВЛЕНИЯ --- */
+@keyframes flashBlink {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ============================================================
+   СТРАНИЦА 404 (ОШИБКА)
+   ============================================================ */
+.error-404-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: var(--bg-dark);
+}
+
+.error-404-box {
+    text-align: center;
+    max-width: 650px;
+    width: 100%;
+    padding: 50px 45px;
+    margin: 0 auto;
+}
+
+.error-404-icon {
+    font-size: 5em;
+    color: var(--accent-blood);
+    text-shadow: 0 0 60px rgba(139, 26, 26, 0.3);
+    margin-bottom: 10px;
+    animation: errorPulse 3s ease-in-out infinite;
+    display: block;
+}
+
+.error-404-code {
+    font-size: 5em;
+    font-family: 'Uncial Antiqua', 'Georgia', serif;
+    color: var(--accent-blood);
+    text-shadow: 0 0 40px rgba(139, 26, 26, 0.2);
+    border: none;
+    margin: 5px 0 10px;
+    padding: 0;
+}
+
+.error-404-title {
+    font-size: 1.6em;
+    color: var(--text-light);
+    margin: 15px 0 20px;
+    border: none;
+    padding: 0;
+}
+
+.error-404-desc {
+    color: var(--text-secondary);
+    font-size: 1.1em;
+    line-height: 1.8;
+    margin: 15px 0 25px;
+    padding: 0;
+}
+
+.error-404-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 25px;
+}
+
+.error-404-quote {
+    margin-top: 35px;
+    padding-top: 20px;
+    color: var(--text-secondary);
+    font-style: italic;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.95em;
+}
+
+/* Анимация пульсации */
+@keyframes errorPulse {
+    0%, 100% { 
+        transform: scale(1); 
+        opacity: 1; 
+    }
+    50% { 
+        transform: scale(1.08); 
+        opacity: 0.8; 
+    }
+}
+
+
+
+
+/* ============================================================
+   СТРАНИЦА ПРОФИЛЯ
+   ============================================================ */
+.profile-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 15px;
+    background: var(--bg-input);
+    border-radius: 6px;
+    border-left: 3px solid var(--accent-gold);
+}
+
+.profile-label {
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.profile-value {
+    font-size: 1.2em;
+    color: var(--text-light);
+    font-family: 'Georgia', serif;
+    word-break: break-all;
+}
+
+/* Для длинных значений (email, телефон) */
+.profile-value small {
+    font-size: 0.7em;
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+
+/* ============================================================
+   ФОРМА ДОБАВЛЕНИЯ ПОСТА
+   ============================================================ */
+.post-form {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.post-form .form-group {
+    margin-bottom: 20px;
+}
+
+.post-form .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text-secondary);
+    font-size: 0.95em;
+    letter-spacing: 0.5px;
+}
+
+.post-form .form-group input,
+.post-form .form-group textarea,
+.post-form .form-group select {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-family: 'Georgia', serif;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.post-form .form-group input:focus,
+.post-form .form-group textarea:focus,
+.post-form .form-group select:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 25px rgba(184, 134, 11, 0.08);
+}
+
+.post-form .form-group input::placeholder,
+.post-form .form-group textarea::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.5;
+}
+
+.post-form .form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238a7a6a' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+}
+
+.post-form .form-group select option {
+    background: var(--bg-panel);
+    color: var(--text-primary);
+}
+
+.post-form .form-group select:hover {
+    border-color: var(--accent-gold);
+}
+
+
+/* ============================================================
+   ФОРМА РЕГИСТРАЦИИ
+   ============================================================ */
+.register-form {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.register-form .form-group {
+    margin-bottom: 18px;
+}
+
+.register-form .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+}
+
+.register-form .form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-family: 'Georgia', serif;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+.register-form .form-group input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 25px rgba(184, 134, 11, 0.08);
+}
+
+.register-form .form-group input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.5;
+}
+
+.register-form .form-group small {
+    color: var(--text-secondary);
+    font-size: 0.75em;
+    display: block;
+    margin-top: 4px;
+}
+
+/* Валидация (подсветка при ошибке) */
+.register-form .form-group input.error {
+    border-color: var(--accent-blood);
+    box-shadow: 0 0 25px rgba(139, 26, 26, 0.15);
+}
+
+.register-form .form-group input.success {
+    border-color: #4caf50;
+    box-shadow: 0 0 25px rgba(76, 175, 80, 0.15);
+}

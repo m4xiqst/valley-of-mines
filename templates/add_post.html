@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{{ super() }}
+
+{% block content %}
+<div class="panel" style="max-width: 700px; margin: 0 auto;">
+    <h2 style="text-align: center; border: none;">✒️ Новый пост</h2>
+    <p style="text-align: center; color: var(--text-secondary); font-size: 0.95em; margin-bottom: 25px;">
+        Поделись историей, находкой или новостью из Долины Рудников
+    </p>
+    
+    <form method="POST" action="{{ url_for('add_post') }}" class="post-form">
+        <!-- Заголовок -->
+        <div class="form-group">
+            <label for="title">📌 Заголовок <span class="required">*</span></label>
+            <input type="text" id="title" name="title" placeholder="Введите заголовок поста" required autofocus>
+        </div>
+        
+        <!-- Категория -->
+        <div class="form-group">
+            <label for="category">📂 Категория</label>
+            <select id="category" name="category">
+                <option value="general">Общее</option>
+                <option value="rudniki">Рудники</option>
+                <option value="drevnosti">Древности</option>
+                <option value="lageri">Лагеря</option>
+                <option value="bitvy">Битвы</option>
+                <option value="legendy">Легенды</option>
+            </select>
+        </div>
+
+        <!-- ===== НОВОЕ ПОЛЕ: URL ПОСТА ===== -->
+        <div class="form-group">
+            <label for="post_url">🔗 URL поста (для админа)</label>
+            <input type="text" id="post_url" name="post_url" placeholder="Например: about_gomes">
+            <small style="color: var(--text-secondary); font-size: 0.8em; display: block; margin-top: 5px;">
+                Если оставить пустым — URL создастся автоматически из ID
+            </small>
+        </div>
+        
+        <!-- Текст поста -->
+        <div class="form-group">
+            <label for="content">📝 Текст поста <span class="required">*</span></label>
+            <textarea id="content" name="content" placeholder="Опишите событие, находку или историю..." rows="8" required></textarea>
+        </div>
+
+        {% for category, message in get_flashed_messages(with_categories = True) %}
+        <div class='flash-message {{category}}'>{{message}}</div>
+        {% endfor %}
+        <!-- Кнопки -->
+        <div style="display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap;">
+            <button type="submit" class="btn btn-gold" style="flex: 1;">📤 Опубликовать</button>
+            <a href="{{ url_for('add_post') }}" class="btn" style="flex: 0.5; text-align: center;">⬅ Назад</a>
+        </div>
+    </form>
+</div>
+
+<!-- Подсказка -->
+<div class="panel panel-dark" style="max-width: 700px; margin: 20px auto 0; text-align: center;">
+    <p style="color: var(--text-secondary); font-size: 0.85em; font-style: italic;">
+        "Каждая история, рассказанная в Долине, становится легендой."
+    </p>
+</div>
+{% endblock %}

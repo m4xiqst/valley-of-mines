@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="panel">
+    <h2>📜 Связь с Долиной Рудников</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 20px;">
+        Есть вопросы, предложения или хочешь сообщить о проблеме?<br>
+        Заполни форму — и мы обязательно ответим.
+    </p>
+    
+    <!-- ===== FLASH-СООБЩЕНИЯ ===== -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                    <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <form method="POST" action="{{ url_for('contact_us') }}" class="feedback-form">
+        <div class="form-group">
+            <label for="name">Имя <span class="required">*</span></label>
+            <input type="text" id="name" name="name" placeholder="Введите ваше имя" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email <span class="required">*</span></label>
+            <input type="email" id="email" name="email" placeholder="example@mail.ru" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Телефон</label>
+            <input type="tel" id="phone" name="phone" placeholder="+7 (XXX) XXX-XX-XX">
+        </div>
+        
+        <div class="form-group">
+            <label for="message">Комментарий <span class="required">*</span></label>
+            <textarea id="message" name="message" placeholder="Опишите ваш вопрос или предложение..." rows="5" required></textarea>
+        </div>
+        
+        <div style="display: flex; gap: 15px; margin-top: 20px;">
+            <button type="submit" class="btn btn-gold">📨 Отправить</button>
+            <a href="{{ url_for('index') }}" class="btn">⬅ Вернуться</a>
+        </div>
+    </form>
+</div>
+
+<div class="panel panel-dark" style="margin-top: 20px;">
+    <h3 style="color: var(--text-secondary); font-size: 1.1em;">📬 Другие способы связи</h3>
+    <p style="color: var(--text-secondary); margin-top: 10px;">
+        <strong>Email:</strong> support@dolina-rudnikov.ru<br>
+        <strong>Discord:</strong> <a href="#" style="color: var(--accent-gold); text-decoration: none;">DolinaRP#1234</a><br>
+        <strong>Telegram:</strong> <a href="#" style="color: var(--accent-gold); text-decoration: none;">@dolina_rp</a>
+    </p>
+</div>
+{% endblock %}

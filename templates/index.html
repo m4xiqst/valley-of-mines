@@ -1,0 +1,15 @@
+<link rel="stylesheet" href="/style/style.css">
+{% extends "base.html" %}
+{% block content %}
+{{super()}}
+<h2>Посты нашего форума</h2>
+
+<ul>
+{% for post in posts %}
+    <li>
+        <a href="{{ url_for('show_post', post_url=post.post_url) }}">{{ post.post_title | striptags }}</a>
+        <p>{{ post.post_content | striptags | truncate(80)}}</p>
+    </li>
+{% endfor %}
+</ul>
+{% endblock %}

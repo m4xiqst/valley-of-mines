@@ -1,0 +1,33 @@
+{% extends 'admin/base_admin.html' %}
+
+{% block content %}
+<div class="admin-login">
+    <h2>Вход в административную панель</h2>
+    
+    <!-- Flash-сообщения -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                    <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('admin.login') }}" class="login-form">
+        <div class="form-group">
+            <label for="username">👤 Логин</label>
+            <input type="text" id="username" name="username" placeholder="Введите логин" required autofocus>
+        </div>
+
+        <div class="form-group">
+            <label for="password">🔑 Пароль</label>
+            <input type="password" id="password" name="password" placeholder="Введите пароль" required>
+        </div>
+
+        <button type="submit" class="btn btn-gold">Войти</button>
+    </form>
+</div>
+{% endblock %}

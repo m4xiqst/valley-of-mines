@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>{{ 'Готика: Долина Рудников.' }}</title>
+    {% endif %}
+
+    
+    <!-- ШРИФТЫ -->
+    <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&family=Georgia:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}?v=2">
+</head>
+<body>
+    
+    <!-- ===== ШАПКА ===== -->
+    <div class="panel" style="text-align: center; border-color: #4a3520;">
+        <h1 style="border: none; padding: 10px 0;">⚔ Долина Рудников</h1>
+        <p style="color: var(--text-secondary); font-style: italic; letter-spacing: 2px;">
+            "Руда — это кровь. Кровь — это жизнь."
+        </p>
+    </div>
+
+    <nav class="menu">
+        {% for m in menu %}
+            <a href="{{ m.menu_item_url }}">{{ m.menu_item }}</a>
+        {% endfor %}
+    </nav>
+
+    <div class="container">
+        {% block content %}
+        {% if hero_text %}
+        <h1>{{ hero_text }}</h1>
+        {% else %}
+        <h1>{{ 'Заголовка пока нет, но он скоро обязательно появится! '}}</h1>
+        {% endif %}
+        {% endblock %}
+    </div>
+
+</body>
+</html>

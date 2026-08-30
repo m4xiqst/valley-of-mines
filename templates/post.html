@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{{ super() }}
+{% block content %}
+<h2> {{post.post_title | safe}}</h2>
+<p>{{post.post_content | safe}}</p>
+{% endblock %}

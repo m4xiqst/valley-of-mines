@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{{ super() }}
+
+{% block content %}
+<div class="panel" style="max-width: 450px; margin: 0 auto;">
+    <h2 style="text-align: center; border: none;">🔐 Вход в Долину</h2>
+    <p style="text-align: center; color: var(--text-secondary); font-size: 0.95em; margin-bottom: 25px;">
+        Введи свои данные, чтобы войти
+    </p>
+    
+    <!-- ===== FLASH-СООБЩЕНИЯ (ПЕРЕД ФОРМОЙ) ===== -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                    <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+<form method="POST" action="" class="login-form">
+    {{ form.hidden_tag() }}
+    
+    <div class="form-group">
+        {{ form.login.label(class="profile-label") }}
+        
+        {% if form.login.errors %}
+            {{ form.login(class="form-control invalid", placeholder="Введите ваш логин") }}
+            <span class="invalid-feedback">
+                {% for error in form.login.errors %}
+                    {{ error }}
+                {% endfor %}
+            </span>
+        {% else %}
+            {{ form.login(class="form-control", placeholder="Введите ваш логин") }}
+        {% endif %}
+    </div>
+    
+    <div class="form-group">
+        {{ form.password.label(class="profile-label") }}
+        
+        {% if form.password.errors %}
+            {{ form.password(class="form-control invalid", placeholder="Введите ваш пароль") }}
+            <span class="invalid-feedback">
+                {% for error in form.password.errors %}
+                    {{ error }}
+                {% endfor %}
+            </span>
+        {% else %}
+            {{ form.password(class="form-control", placeholder="Введите ваш пароль") }}
+        {% endif %}
+    </div>
+    
+    <div class="form-group" style="margin: 10px 0;">
+        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--text-secondary);">
+            {{ form.remainme(class="form-check-input", style="width: 18px; height: 18px; accent-color: var(--accent-gold); cursor: pointer;") }}
+            Запомнить меня
+        </label>
+    </div>
+    
+    <div style="display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap; justify-content: center;">
+        {{ form.submit(class="btn btn-gold", style="flex: 1; min-width: 120px;") }}
+        <a href="{{ url_for('index') }}" class="btn" style="flex: 1; min-width: 120px; text-align: center;">⬅ Назад</a>
+    </div>
+</form>
+
+    
+    <!-- Ссылка на регистрацию (заглушка) -->
+    <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color);">
+        <p style="color: var(--text-secondary); font-size: 0.9em;">
+            Нет аккаунта? 
+            <a href="{{ url_for('registration')}}" style="color: var(--accent-gold); text-decoration: none; font-weight: bold;">
+                Зарегистрироваться
+            </a>
+        </p>
+    </div>
+</div>
+
+<!-- Дополнительный блок с атмосферой -->
+<div class="panel panel-dark" style="max-width: 450px; margin: 20px auto 0; text-align: center;">
+    <p style="color: var(--text-secondary); font-size: 0.85em; font-style: italic;">
+        "В Долине каждый сам кузнец своей судьбы."
+    </p>
+</div>
+{% endblock %}

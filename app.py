@@ -15,10 +15,13 @@ from config import DevConfig
 from forms import LoginForm, RegistrationForm
 
 from admin.admin import admin
+from auth.auth import auth
 
 app = Flask(__name__)
 
+# Blueprints
 app.register_blueprint(admin, url_prefix = '/admin')
+app.register_blueprint(auth, url_prefix = '/auth')
 
 app.config.from_object(DevConfig)
 
@@ -30,24 +33,6 @@ login_manager.login_message_category = 'error'
 
 
 db.init_app(app=app)
-
-
-@app.route('/show_config')
-def show_config():
-    return f'''
-            'SECRET_KEY' : {app.config['SECRET_KEY']}, 
-            'SQLALCHEMY_DATABASE_URI' : {app.config['SQLALCHEMY_DATABASE_URI']}, 
-            'DEBUG' : {app.config['DEBUG']}, 
-            'SQLALCHEMY_TRACK_MODIFICATIONS' : {app.config['SQLALCHEMY_TRACK_MODIFICATIONS']}, 
-    '''
-
-@app.route('/test_db')
-def test_db():
-    try:
-        db.engine.connect()
-        return 'База данных подключена!'
-    except:
-        return 'База данных не подключена!'
 
 
 with app.app_context():
@@ -68,83 +53,13 @@ def index():
     
     return render_template('index.html', title = 'Готика: Долина Рудников. Главная страница', menu = menu, hero_text = 'Добро пожаловать в долину рудников!', posts = posts_lists)
 
-
-
-@app.route('/login', methods=['POST', 'GET'])
-def login():
-    if current_user.is_authenticated:    
-        return redirect(url_for('profile', username=current_user.get_username()))
-    else:
-        form = LoginForm()
-        
-        if request.method == 'GET':
-            return render_template('login.html', menu=menu, title='Вход в аккаунт', hero_text='Войти в аккаунт', form=form)
-        elif request.method == 'POST':
-            
-            
-            if form.validate_on_submit():
-                
-                user_login = form.login.data
-                user_password = form.password.data
-                
-                user = Users.query.filter_by(user_login=user_login).first()
-                
-                if user:
-                    if check_password_hash(user.user_password, user_password):
-                        logined_user = UserLogin().create(user)
-                        rm = form.remainme.data
-                        login_user(logined_user, remember=rm)
-                        
-                        return redirect(request.args.get('next') or url_for('profile', username=user.user_login))
-                    else:
-                        flash('Проверьте правильность ввода!', category='error')
-                        return render_template('login.html', menu=menu, title='Войти в аккаунт', hero_text='Вход в аккаунт', form=form)
-                else:
-                    flash('Пользователь не существует! Зарегистрируйте аккаунт!', category='error')
-                    return redirect(url_for('registration'))
-            else:
-                flash('Некорректный ввод данных', category='error')
-                return render_template('login.html', menu=menu, title='Вход в аккаунт', hero_text='Войти в аккаунт', form=form)
-                
-        
-
+       
 # выход из профиля
 @app.route('/logout')
 def logout():
     logout_user()
     return f'Вы больше не авторизованы'
             
-    
-
-@app.route('/registration', methods=['POST', 'GET'])
-def registration():
-    if current_user.is_authenticated:
-        return redirect(url_for('profile', username=current_user.get_username()))
-    else:
-        form = RegistrationForm()
-        
-        if request.method == 'GET':
-            return render_template('registration.html', menu=menu, title='Регистрация аккаунта', hero_text='Зарегистрируйтесь чтобы играть', form=form)
-        elif request.method == 'POST':
-            
-            if form.validate_on_submit():
-                user_login = form.login.data
-                user_email = form.email.data
-                user_password = form.password.data
-                
-                existing_user = Users.query.filter_by(user_login=user_login).first()
-                
-                if existing_user:
-                    flash('Пользователь уже зарегистрирован! Выберите другое имя!', category='error')
-                    return render_template('registration.html', menu=menu, title='Регистрация аккаунта', hero_text='Зарегистрируйтесь чтобы играть')
-                else:
-                    db.session.add(Users(user_login = user_login, user_email = user_email, user_password = generate_password_hash(user_password)))
-                    db.session.commit()
-                    
-                    flash('Пользователь зарегистрирован! Добро пожаловать в долину рудников!', category='success')
-                    return redirect(url_for('profile', username=user_login))
-
-        
     
 # работаем с пользователями
 @app.login_manager.user_loader
@@ -231,18 +146,12 @@ def delete_avatar():
             
         flash('Аватарка удалена!', category='success')
         return redirect(url_for('profile', username = current_user.get_username()))
-    
-    
-    
-    
-    
+      
 
 @app.route('/profile2')
 def profile2():
     return f'''<p><a href={url_for('logout')}>Выйти из профиля</a></p>
                 user info: {current_user.get_id()}'''
-
-
 
 
 # о нас
@@ -280,8 +189,6 @@ def contact_us():
 
 
 
-
-# РАБОТАЕМ С ПОСТАМИ
 # добавить пост
 @app.route('/add_post', methods=['POST', 'GET'])
 def add_post():
@@ -324,50 +231,9 @@ def show_post(post_url):
     return render_template('post.html', title=f'Долина рудников ~ {post.post_title} ~', menu=menu, post = post)
     
 
-
-
-# Делаем ответы сервера
-@app.route('/test_response')
-def test_response():
-    content = render_template('index.html', menu=menu, title='title', hero_text = 'hero_text', posts = Posts.query.all())
-    res = make_response(content)
-    
-    res.headers['Content-Type'] = 'text/plain'
-    res.headers['Server'] = 'flasksite'
-    
-    return res
-
-@app.route('/test_response2')
-def test_response2():
-    res = '<h1>Страница недоступна</h1>'
-    
-    return res
-
-# @app.errorhandler(404)
-# def page_not_found(error):
-#     return ('Страница недоступна', 404)
-
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('404.html')
-
-
-@app.route('/test_response3')
-def test_response3():
-    return ('<h1>Something page</h1>', 200, {'Content-Type' : 'text/plain'})
-
-@app.route('/transfer')
-def transfer():
-    return redirect(url_for('index'), 301)
-
-
-print('initialization app')
-print()
-
-@app.before_request
-def before_request():
-    print('before_request() is called()')
-    print()
 
 
     
@@ -378,11 +244,6 @@ def after_requset(response):
     response.headers['Expires'] = '0'
     return response
     
-    # res = response
-    # res.headers['Content-Type'] = 'text/html; charset=utf-8'
-    # res.headers['Server'] = 'flasksite'
-    
-    # return res
 
 @app.teardown_request
 def teardown_request(exception = None):
@@ -390,59 +251,10 @@ def teardown_request(exception = None):
     print()
     
 
-#работаем с cookie
-@app.route('/test_login')
-def test_login():
-    log = ''
-    
-    if request.cookies.get('logged'):
-        log = request.cookies.get('logged')
-    
-    res = make_response(f'<h1>Страница авторизации</h1> logged: {log}')
-    
-    res.set_cookie('logged', 'yes')
-    
-    return res
-
-@app.route('/test_logout')
-def test_logout():
-    res = make_response('<h1>Вы больше не авторизованы</h1>')
-    
-    res.set_cookie('logged', '', 0)
-    
-    return res
-
-
-
-# работаем с сессиями
-@app.route('/test_session')
-def test_session():
-    if 'visits' in session:
-        session['visits'] += 1
-    else:
-        session['visits'] = 1
-        
-    return f'Количество заходов: {session['visits']}'
-
-data = [1, 2, 3, 4, 5]
-@app.route('/test_data')
-def test_data():
-    if 'data' in session:
-        session['data'][1] += 1
-        session.modified = True
-    else:
-        session['data'] = data
-    
-    return f'''session['data'] = {session['data']}'''
-
 
 if __name__ == '__main__':
     app.run(debug=True)
-    
-with app.test_request_context():
-    print(url_for('index'))
-    print(url_for('about_us'))
-    print(url_for('contact_us'))
+
 
 
 

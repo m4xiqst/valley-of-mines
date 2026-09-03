@@ -9,12 +9,6 @@ from forms import RegistrationForm, LoginForm
 
 auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static')
 
-with auth.app_context():
-    db.create_all()
-    
-    menu = Main_menu.query.all()
-    
-    print('Tables were created')
 
 @auth.route('/registration', methods=['POST', 'GET'])
 def registration():

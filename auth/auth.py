@@ -2,14 +2,12 @@ from flask import Blueprint, request, render_template, flash, request, session, 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from UserLogin import UserLogin
-from models import Users, Main_menu, SQLAlchemy
+from models import Users, Main_menu, db
 from forms import RegistrationForm, LoginForm
 
 
 
 auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static')
-
-db = SQLAlchemy(app=auth)
 
 with auth.app_context():
     db.create_all()
@@ -86,5 +84,8 @@ def login():
 def logout():
     if not current_user.is_authenticated:
         return redirect(url_for('.login'))
+    else:
+        logout_user()
+        return f'Вы больше не авторизованы'
         
                 

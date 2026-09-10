@@ -21,7 +21,7 @@
         {% endif %}
     {% endwith %}
     
-<form method="POST" action="" class="login-form">
+<form method="POST" action="{{ url_for('auth.login') }}" class="login-form">
     {{ form.hidden_tag() }}
     
     <div class="form-group">
@@ -72,7 +72,7 @@
     <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color);">
         <p style="color: var(--text-secondary); font-size: 0.9em;">
             Нет аккаунта? 
-            <a href="{{ url_for('registration')}}" style="color: var(--accent-gold); text-decoration: none; font-weight: bold;">
+            <a href="{{ url_for('auth.registration')}}" style="color: var(--accent-gold); text-decoration: none; font-weight: bold;">
                 Зарегистрироваться
             </a>
         </p>

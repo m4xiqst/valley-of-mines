@@ -21,7 +21,7 @@
         {% endif %}
     {% endwith %}
     
-<form method="POST" action="{{ url_for('registration') }}" class="registration-form" novalidate>
+<form method="POST" action="{{ url_for('auth.registration') }}" class="registration-form" novalidate>
     {{ form.hidden_tag() }}
 
     <!-- Логин -->
@@ -101,7 +101,7 @@
     <div style="text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border-color);">
         <p style="color: var(--text-secondary); font-size: 0.9em;">
             Уже есть аккаунт? 
-            <a href="{{ url_for('login') }}" style="color: var(--accent-gold); text-decoration: none; font-weight: bold;">
+            <a href="{{ url_for('auth.login') }}" style="color: var(--accent-gold); text-decoration: none; font-weight: bold;">
                 Войти
             </a>
         </p>

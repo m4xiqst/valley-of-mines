@@ -237,8 +237,8 @@ def add_post():
                 return render_template('add_post.html', menu=menu, title = 'Долина Рудников: Добавить пост', hero_text = 'Добавить пост')
             
             else:
-                
                 flash ('''Post wasn't added ❌. Something wrong with lenght of title or content''', category='error')
+                return render_template('add_post.html', menu=menu, title = 'Долина Рудников: Добавить пост', hero_text = 'Добавить пост')
                 
 # показать пост
 @app.route('/show_post/<post_url>')

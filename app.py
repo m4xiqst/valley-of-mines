@@ -35,24 +35,6 @@ login_manager.login_message_category = 'error'
 db.init_app(app=app)
 
 
-@app.route('/show_config')
-def show_config():
-    return f'''
-            'SECRET_KEY' : {app.config['SECRET_KEY']}, 
-            'SQLALCHEMY_DATABASE_URI' : {app.config['SQLALCHEMY_DATABASE_URI']}, 
-            'DEBUG' : {app.config['DEBUG']}, 
-            'SQLALCHEMY_TRACK_MODIFICATIONS' : {app.config['SQLALCHEMY_TRACK_MODIFICATIONS']}, 
-    '''
-
-@app.route('/test_db')
-def test_db():
-    try:
-        db.engine.connect()
-        return 'База данных подключена!'
-    except:
-        return 'База данных не подключена!'
-
-
 with app.app_context():
     db.create_all()
     

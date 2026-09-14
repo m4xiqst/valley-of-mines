@@ -4,7 +4,7 @@ from app import app
 
 menu = [
     {'menu_item' : 'Главная', 'menu_item_url' : '/index'},
-    {'menu_item' : 'Войти', 'menu_item_url' : '/login'},
+    {'menu_item' : 'Войти', 'menu_item_url' : 'auth/login'},
     {'menu_item' : 'Профиль', 'menu_item_url' : '/profile'},
     {'menu_item' : 'О нас', 'menu_item_url' : '/about_us'},
     {'menu_item' : 'Связаться с нами', 'menu_item_url' : '/contact_us'},

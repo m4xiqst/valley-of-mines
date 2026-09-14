@@ -7,11 +7,15 @@ from forms import RegistrationForm, LoginForm
 
 
 
+
 auth = Blueprint('auth', __name__, template_folder='templates', static_folder='static')
+
+
 
 
 @auth.route('/registration', methods=['POST', 'GET'])
 def registration():
+    menu = Main_menu.query.all()
     if current_user.is_authenticated:
         return redirect(url_for('profile', username = current_user.get_username()))
     else:    
@@ -21,7 +25,7 @@ def registration():
         elif request.method == 'POST':
             if form.validate_on_submit():
                 
-                existing_user = Users.query.filter_by(user_login=user_login).first()
+                existing_user = Users.query.filter_by(user_login=form.login.data).first()
                 if existing_user:
                     flash('Такой пользователь уже существует! Придумайте другой никнейм', category='error')
                     return render_template('auth/registration.html', menu = menu, title='Зарегистрируйся чтобы играть', hero_text = 'Регистрация аккаунта', form=form)
@@ -41,7 +45,7 @@ def registration():
                     login_user(logined_user)
             
                     flash(f'Добро пожаловать, {user_login}')
-                    return redirect(url_for('profile', username = user.login_user))  
+                    return redirect(url_for('profile', username = user.user_login))  
             else:
                 flash('Некорректные данные. Проверьте правильность ввода.', category='error')
                 return render_template('auth/registration.html', menu = menu, title='Зарегистрируйся чтобы играть', hero_text = 'Регистрация', form=form)
@@ -49,6 +53,7 @@ def registration():
             
 @auth.route('/login', methods=['POST', 'GET'])
 def login():
+    menu = Main_menu.query.all()
     if current_user.is_authenticated:
         return redirect(url_for('profile', username=current_user.get_username()))
     else:

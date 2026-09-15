@@ -1,6 +1,37 @@
 {% extends 'base.html' %}
 {{ super() }}
 {% block content %}
-<h2> {{post.post_title | safe}}</h2>
-<p>{{post.post_content | safe}}</p>
+<h2>{{ post.post_title | safe }}</h2>
+<p>{{ post.post_content | safe }}</p>
+
+<ul class="comments-list">
+    {% for comment, user in comments %}
+        <li class="comment-item">
+            <span class="comment-author">{{ user.user_login }}</span>
+            <p class="comment-text">{{ comment.text }}</p>
+            <span class="comment-date">{{ comment.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
+        </li>
+    {% endfor %}
+</ul>
+
+<h3>Оставить комментарий</h3>
+<form method="POST" action="{{ url_for('add_comment', post_url=post.post_url) }}">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        {{ form.text.label(class="form-label") }}
+        {% if form.text.errors %}
+            {{ form.text(class="form-control invalid", placeholder="Введите ваш комментарий") }}
+            <span class="invalid-feedback">
+                {% for error in form.text.errors %}
+                    {{ error }}
+                {% endfor %}
+            </span>
+        {% else %}
+            {{ form.text(class="form-control", placeholder="Введите ваш комментарий") }}
+        {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-gold">Отправить</button>
+</form>
 {% endblock %}

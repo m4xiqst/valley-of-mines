@@ -5,14 +5,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from flask import Flask, render_template, url_for, flash, request, redirect, abort, session, make_response
-from models import db, Main_menu, Posts, Users
+from models import db, Main_menu, Posts, Users, Comments
 from datetime import timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from UserLogin import UserLogin
 from config import DevConfig
-from forms import LoginForm, RegistrationForm
+from forms import CommentForm 
 
 from admin.admin import admin
 from auth.auth import auth
@@ -26,7 +26,7 @@ app.register_blueprint(auth, url_prefix = '/auth')
 app.config.from_object(DevConfig)
 
 login_manager = LoginManager(app=app)
-login_manager.login_view = 'login'
+login_manager.login_view = 'auth.login'
 login_manager.login_message = 'Вы не авторизованы'
 login_manager.login_message_category = 'error'
 
@@ -226,10 +226,30 @@ def add_post():
 @app.route('/show_post/<post_url>')
 @login_required
 def show_post(post_url):
+    form = CommentForm()
     post = Posts.query.filter_by(post_url = post_url).first()
+    comments = db.session.query(Comments, Users).join(Users, Comments.author_id == Users.id).filter(Comments.post_id == post.id).all()
     
-    return render_template('post.html', title=f'Долина рудников ~ {post.post_title} ~', menu=menu, post = post)
-    
+    return render_template('post.html', title=f'Долина рудников ~ {post.post_title} ~', menu=menu, post = post, form=form, comments = comments)
+
+@app.route('/add_comment/<post_url>', methods=['POST', 'GET'])
+@login_required
+def add_comment(post_url):
+    form = CommentForm()
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            text = form.text.data
+            author_id = int(current_user.get_id())
+            post = Posts.query.filter_by(post_url = post_url).first()
+            
+            db.session.add(Comments(text = text, author_id  = author_id, post_id = post.id))
+            db.session.commit()
+            
+            flash('Ваш пост успешно добавлен!', category='success')
+            return redirect(url_for('show_post', post_url = post_url))
+    else:
+        flash('Ошибка ввода данных. Попробуйте снова', category='error')
+        return redirect(url_for('show_post', post_url = post_url))
 
 @app.errorhandler(404)
 def page_not_found(error):

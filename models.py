@@ -38,5 +38,18 @@ class Users(db.Model):
     avatar = db.Column(db.String(300), nullable = True)
     
 
-
+class Comments(db.Model):
+    __tablename__ = 'comments'
+    
+    id = db.Column(db.Integer, primary_key = True)
+    text = db.Column(db.String(10_000), nullable = False)
+    
+    author_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable = False)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable = False)
+    
+    created_at = db.Column(db.DateTime, default = lambda: datetime.now(timezone.utc))
+    
+    def __repr__(self):
+        return f'Comment from {self.author_id}'
+    
     

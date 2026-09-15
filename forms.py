@@ -19,3 +19,6 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Создать аккаунт')
     
     
+class CommentForm(FlaskForm):
+    text = StringField('Введите текст вашего поста', validators=[DataRequired(), Length (min=2, max=10_000, message='Минимальное количество символов - 2, максимальное - 10 000')])
+    submit = SubmitField('Ответить')

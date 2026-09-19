@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect, render_template, session, flash, url_for
-from models import Posts, Users
+from models import Posts, Users, db
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
 
@@ -66,7 +66,7 @@ def list_pub():
     return render_template('admin/list_pub.html', menu=menu, posts=list)
 
 
-@admin.route('list_users')
+@admin.route('/list_users')
 def list_users():
     list = []
     
@@ -77,3 +77,32 @@ def list_users():
         print('Список пользователей не получен')
         
     return render_template('admin/list_users.html', menu=menu, users=list)
+
+@admin.route('/show_user/<user_id>')
+def show_user(user_id):
+    if is_logged():
+        try:
+            user = Users.query.get(user_id)
+        except:
+            print('Пользователь не найден')
+        
+        return render_template('admin/user_detail.html', menu=menu, user=user)
+    else:
+        return redirect(url_for('admin.login'))
+
+@admin.route('/make_admin/<user_id>', methods=['POST'])
+def make_admin(user_id):
+    try:
+        user = Users.query.get(user_id)
+    except: 
+        print('Пользователь не найден')
+        
+    if not user.is_admin:
+       user.is_admin = True 
+    else:
+        user.is_admin = False
+        
+    db.session.commit()
+    
+    return redirect(url_for('admin.show_user', user_id = user_id))
+    

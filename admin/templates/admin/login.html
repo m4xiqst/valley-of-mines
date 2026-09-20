@@ -16,18 +16,40 @@
         {% endif %}
     {% endwith %}
 
-    <form method="POST" action="{{ url_for('admin.login') }}" class="login-form">
-        <div class="form-group">
-            <label for="username">👤 Логин</label>
-            <input type="text" id="username" name="username" placeholder="Введите логин" required autofocus>
-        </div>
+<form method="POST" action="{{ url_for('admin.login') }}" class="login-form">
+    {{ form.hidden_tag() }}
 
-        <div class="form-group">
-            <label for="password">🔑 Пароль</label>
-            <input type="password" id="password" name="password" placeholder="Введите пароль" required>
-        </div>
+    <div class="form-group">
+        {{ form.login.label(class='profile-label') }}
 
-        <button type="submit" class="btn btn-gold">Войти</button>
-    </form>
+        {% if form.login.errors %}
+            {{ form.login(class='form-control invalid', placeholder='Введите логин администратора') }}
+            <span class='invalid-feedback'>
+                {% for error in form.login.errors %}
+                    {{ error }}
+                {% endfor %}
+            </span>
+        {% else %}
+            {{ form.login(class='form-control', placeholder='Введите ваш логин') }}
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        {{ form.password.label(class='profile-label') }}
+
+        {% if form.password.errors %}
+            {{ form.password(class='form-control invalid', placeholder='Введите пароль') }}
+            <span class='invalid-feedback'>
+                {% for error in form.password.errors %}
+                    {{ error }}
+                {% endfor %}
+            </span>
+        {% else %}
+            {{ form.password(class='form-control', placeholder='Введите пароль') }}
+        {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-gold">Войти</button>
+</form>
 </div>
 {% endblock %}

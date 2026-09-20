@@ -2,6 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, BooleanField, SubmitField   
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
+#users
 class LoginForm(FlaskForm):
     login = StringField('Логин: ', validators = [DataRequired(), Length(min=4, max=100, message='Ты шо ебанутый? Где ты видел ник меньше 4 символов или больше 100? Вводи нормально нахуй!')])
     password = PasswordField('Пароль: ', validators = [DataRequired(), Length(min=4, max=100)])
@@ -22,3 +23,8 @@ class RegistrationForm(FlaskForm):
 class CommentForm(FlaskForm):
     text = StringField('Введите текст вашего поста', validators=[DataRequired(), Length (min=2, max=10_000, message='Минимальное количество символов - 2, максимальное - 10 000')])
     submit = SubmitField('Ответить')
+    
+#admins
+class LoginAdmin(FlaskForm):
+    login = StringField('Логин администратора', validators=[DataRequired(), Length(min=4, max=100)])
+    password = StringField('Пароль от аккаунта админстратора', validators=[DataRequired(), Length(min=4, max=20)])

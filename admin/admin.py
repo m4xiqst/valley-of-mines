@@ -1,5 +1,10 @@
 from flask import Blueprint, request, redirect, render_template, session, flash, url_for
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from UserLogin import UserLogin
 from models import Posts, Users, db
+from forms import LoginAdmin
+from werkzeug.security import check_password_hash
+
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
 
@@ -12,46 +17,53 @@ menu = [{'title' : 'Главная', 'url' : '.index'},
 
 @admin.route('/')
 @admin.route('/index')
+@login_required
 def index():
-    if not is_logged():
-        return redirect(url_for('.login'))
-    else:
         return render_template('admin/index.html', menu=menu)
     
-def login_admin():
-    session['admin_logged'] = 1    
-    
-def is_logged():
-    return True if session.get('admin_logged') == 1 else False
 
-def logout_admin():
-    session.pop('admin_logged', None)
-    
 @admin.route('/login', methods=['POST', 'GET'])
 def login():
-    if is_logged():
-        return redirect(url_for('.index'))
-    else:
-        if request.method == 'GET':
-            return render_template('admin/login.html', menu=menu)
-        elif request.method == 'POST':
-            if request.form['username'] == 'admin' and request.form['password'] == 'admin123':
-                login_admin()
-                flash('Добро пожаловать, администратор!', category='success')
-                return redirect(url_for('.index'))
+    form = LoginAdmin()
+    if request.method == 'GET':
+        if current_user.is_authenticated:
+            if current_user.is_admin:
+                return redirect(url_for('admin.index'))
             else:
-                flash('Неверный ввод данных! Попробуйте ещё раз', category='error')
-                return render_template('admin/index.html', menu = menu)
+                flash('Вы не администратор! Доступ в админ-панель для вас закрыт.', category='error')
+                return render_template('admin/login.html', menu=menu, form=form)   
+        return render_template('admin/login.html', menu=menu, form=form)
+    elif request.method == 'POST':
+        if form.validate_on_submit():
+            login = form.login.data
+            password = form.password.data
             
+            existing_user = Users.query.filter_by(user_login = login).first()
             
+            if existing_user and existing_user.is_admin:
+                if check_password_hash(existing_user.user_password, password):
+                    logined_user = UserLogin().create(existing_user)
+                    login_user(logined_user)
+                    
+                    flash('Добро пожаловать, администратор!', category='success')
+                    return redirect(url_for('admin.index'))
+                else:
+                    flash('Неправильный пароль! Попробуйте ещё раз', category='error')
+                    return render_template('admin/login.html', menu=menu, form=form)
+            else:
+                flash('Пользователь не найден или пользователь не является админстратором. Попробуйте авторизоваться как обычный игрок.', category='error')
+                return render_template('admin/login.html', menu=menu, form=form)
+        else:
+            flash('Неправильный ввод данных', category='error')
+            return render_template('admin/login.html', menu=menu, form=form)
+        
 @admin.route('/logout')
 def logout():
-    if not is_logged():
-        return redirect(url_for('.login'))
+    if current_user.is_authenticated:
+        logout_user()
+        return redirect(url_for('admin.login'))
     else:
-        logout_admin()
-        return redirect(url_for('.login'))
-    
+        return redirect(url_for('admin.login'))
     
 @admin.route('/list_pub')
 def list_pub():

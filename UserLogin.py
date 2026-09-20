@@ -27,3 +27,6 @@ class UserLogin:
     
     def get_email(self):
         return str(self.__user.user_email)
+    
+    def is_admin(self):
+        return str(self.__user.is_admin)

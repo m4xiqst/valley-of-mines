@@ -4,8 +4,8 @@
     <ul>
         {% for post in posts %}
         <li>
-            <h2> {{ post.post_title }}</h2>
-            <p> {{ post.post_content[:500] | striptags}}</p>
+            <h2> <a href="{{ url_for('admin.show_post', post_id = post.id ) }}">{{ post.post_title }} </a></h2>
+            <p style="font-size: 13;"> {{ post.post_content[:500] | striptags}}</p>
         </li>
         {% endfor %}
     </ul>

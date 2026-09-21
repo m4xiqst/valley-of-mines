@@ -1,0 +1,18 @@
+{% extends 'admin/base_admin.html' %}
+{% block content %}
+    {{ super() }}
+
+<h1> {{ post.post_title }}<h1>
+
+    <div>
+    <p> {{ post.post_content | striptags }} </p>
+    </div>
+
+    <form method="POST" action="">
+        <button> Редактировать пост </button>
+    </form>
+
+    <form method="POST" action="{{ url_for('admin.delete_post', post_id = post.id) }}">
+        <button> Удалить пост </button>
+    </form>
+{% endblock %}

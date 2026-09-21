@@ -57,6 +57,7 @@ def login():
             flash('Неправильный ввод данных', category='error')
             return render_template('admin/login.html', menu=menu, form=form)
         
+        
 @admin.route('/logout')
 def logout():
     if current_user.is_authenticated:
@@ -64,6 +65,7 @@ def logout():
         return redirect(url_for('admin.login'))
     else:
         return redirect(url_for('admin.login'))
+    
     
 @admin.route('/list_pub')
 def list_pub():
@@ -78,10 +80,31 @@ def list_pub():
     return render_template('admin/list_pub.html', menu=menu, posts=list)
 
 
+@admin.route('/show_post/<post_id>')
+def show_post(post_id):
+    try:
+        existing_post = Posts.query.get(post_id)
+    except:
+        print('Пост не найден!')
+    
+    return render_template('admin/post_detail.html', menu=menu, post = existing_post)    
+
+@admin.route('/delete_post/<post_id>', methods=['POST', 'GET'])
+def delete_post(post_id):
+    try:
+        post = Posts.query.get(post_id)
+        
+        db.session.delete(post)
+        db.session.commit()
+    except:
+        print('Такого поста не существует!')
+
+    return redirect(url_for('admin.list_pub'))
+
+
 @admin.route('/list_users')
 def list_users():
     list = []
-    
     try:
         list = Users.query.all()
         print('Список пользователей получен')
@@ -91,16 +114,14 @@ def list_users():
     return render_template('admin/list_users.html', menu=menu, users=list)
 
 @admin.route('/show_user/<user_id>')
+@login_required
 def show_user(user_id):
-    if is_logged():
         try:
             user = Users.query.get(user_id)
         except:
             print('Пользователь не найден')
         
         return render_template('admin/user_detail.html', menu=menu, user=user)
-    else:
-        return redirect(url_for('admin.login'))
 
 @admin.route('/make_admin/<user_id>', methods=['POST'])
 def make_admin(user_id):

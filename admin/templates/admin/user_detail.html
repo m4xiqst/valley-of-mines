@@ -33,7 +33,7 @@
     
     {% else %}
     <p> is admin: No </p>
-        <form method="POST" action="{{ url_for('admin.make_admin', user_id = user.id)}}">
+    <form method="POST" action="{{ url_for('admin.make_admin', user_id = user.id)}}">
         <button> Повысить до администратор </button>
     </form>
     {% endif %}

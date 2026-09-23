@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, EmailField, PasswordField, BooleanField, SubmitField   
+from wtforms import StringField, EmailField, PasswordField, BooleanField, SubmitField, TextAreaField     
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 #users
@@ -28,3 +28,8 @@ class CommentForm(FlaskForm):
 class LoginAdmin(FlaskForm):
     login = StringField('Логин администратора', validators=[DataRequired(), Length(min=4, max=100)])
     password = StringField('Пароль от аккаунта админстратора', validators=[DataRequired(), Length(min=4, max=20)])
+    
+class EditForm(FlaskForm):
+    post_title = StringField('Заголовок: ', validators=[DataRequired(), Length(min=4, max=10_000)])
+    post_content = TextAreaField('Текст: ', validators=[DataRequired(), Length(min=4, max=10_000)])
+    submit = SubmitField('Сохранить')

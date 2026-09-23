@@ -8,7 +8,7 @@
     <p> {{ post.post_content | striptags }} </p>
     </div>
 
-    <form method="POST" action="">
+    <form method="POST" action="{{ url_for('admin.edit_post', post_id = post.id )}}">
         <button> Редактировать пост </button>
     </form>
 

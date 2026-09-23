@@ -1,0 +1,48 @@
+{% extends 'admin/base_admin.html' %}
+{% block content %}
+{{ super() }}
+
+<div class="panel">
+    <h2>Редактирование поста</h2>
+
+    <form method="POST" action="{{ url_for('admin.edit_post', post_id = post.id) }}">
+        {{ form.hidden_tag() }}
+
+        <!-- Заголовок -->
+        <div class="form-group">
+            {{ form.post_title.label(class="form-label") }}
+            {% if form.post_title.errors %}
+                {{ form.post_title(class="form-control invalid") }}
+                <span class="invalid-feedback">
+                    {% for error in form.post_title.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </span>
+            {% else %}
+                {{ form.post_title(class="form-control") }}
+            {% endif %}
+        </div>
+
+        <!-- Текст поста -->
+        <div class="form-group">
+            {{ form.post_content.label(class="form-label") }}
+            {% if form.post_content.errors %}
+                {{ form.post_content(class="form-control invalid") }}
+                <span class="invalid-feedback">
+                    {% for error in form.post_content.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </span>
+            {% else %}
+                {{ form.post_content(class="form-control") }}
+            {% endif %}
+        </div>
+
+        <!-- Кнопки -->
+        <div style="display: flex; gap: 15px; margin-top: 20px;">
+            {{ form.submit(class="btn btn-gold") }}
+            <a href="{{ url_for('admin.list_pub') }}" class="btn">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -2,7 +2,7 @@ from flask import Blueprint, request, redirect, render_template, session, flash,
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from UserLogin import UserLogin
 from models import Posts, Users, db
-from forms import LoginAdmin
+from forms import LoginAdmin, EditForm
 from werkzeug.security import check_password_hash
 
 
@@ -100,6 +100,48 @@ def delete_post(post_id):
         print('Такого поста не существует!')
 
     return redirect(url_for('admin.list_pub'))
+
+
+@admin.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
+def edit_post(post_id):
+    post = Posts.query.get(post_id)
+    
+    form = EditForm(obj=post)
+    
+    if request.method == 'POST':
+        form = EditForm()
+        
+        if form.validate_on_submit():
+            post.post_title = form.post_title.data
+            post.post_content = form.post_content.data
+            
+            db.session.commit()
+            
+            flash('Пост успешно изменён', category='success')
+            return redirect(url_for('admin.list_pub'))
+        else:
+            flash('Неправильный ввод данных. Повторите попытку.', category='error')
+            return redirect(url_for('admin.edit_post', post_id = post_id))
+    
+    return render_template('admin/edit_post.html', menu=menu, form=form, post=post)
+    
+    # if request.method == 'POST':
+        
+    #     form = EditForm()
+        
+    #     if form.validate_on_submit():
+    #         post_title = form.post_title.data
+    #         post_content = form.post_content.data
+            
+    #         post.post_title = post_title
+    #         post.post_content = post_content
+            
+    #         db.session.commit()
+            
+    #         flash('Пост успешно изменён', category='success')
+    #         return redirect(url_for('admin.list_pub'))
+        
+    #     return render_template ('admin/edit_post.html', menu=menu, form=form, post = post)
 
 
 @admin.route('/list_users')

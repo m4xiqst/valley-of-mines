@@ -1,7 +1,7 @@
 from flask import Blueprint, request, redirect, render_template, session, flash, url_for
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from UserLogin import UserLogin
-from models import Posts, Users, db
+from models import Posts, Users, Comments, db
 from forms import LoginAdmin, EditForm
 from werkzeug.security import check_password_hash
 
@@ -82,12 +82,13 @@ def list_pub():
 
 @admin.route('/show_post/<post_id>')
 def show_post(post_id):
-    try:
-        existing_post = Posts.query.get(post_id)
-    except:
-        print('Пост не найден!')
     
-    return render_template('admin/post_detail.html', menu=menu, post = existing_post)    
+    existing_post = Posts.query.get(post_id)
+  
+        
+    comments = db.session.query(Comments, Users).join(Users, Comments.author_id == Users.id).filter(Comments.post_id == existing_post.id).all()
+    
+    return render_template('admin/post_detail.html', menu=menu, post = existing_post, comments = comments)    
 
 @admin.route('/delete_post/<post_id>', methods=['POST', 'GET'])
 def delete_post(post_id):
@@ -100,6 +101,15 @@ def delete_post(post_id):
         print('Такого поста не существует!')
 
     return redirect(url_for('admin.list_pub'))
+
+@admin.route('/delete_comment/<comment_id>', methods=['POST', 'GET'])
+def delete_comment(comment_id):
+    comment = Comments.query.get(comment_id)
+    db.session.delete(comment)
+    db.session.commit()
+    
+    flash('Комментарий успешно удалён', category='success')
+    return redirect(url_for('admin.show_post', post_id = comment.post_id))
 
 
 @admin.route('/edit_post/<int:post_id>', methods=['GET', 'POST'])
@@ -125,24 +135,6 @@ def edit_post(post_id):
     
     return render_template('admin/edit_post.html', menu=menu, form=form, post=post)
     
-    # if request.method == 'POST':
-        
-    #     form = EditForm()
-        
-    #     if form.validate_on_submit():
-    #         post_title = form.post_title.data
-    #         post_content = form.post_content.data
-            
-    #         post.post_title = post_title
-    #         post.post_content = post_content
-            
-    #         db.session.commit()
-            
-    #         flash('Пост успешно изменён', category='success')
-    #         return redirect(url_for('admin.list_pub'))
-        
-    #     return render_template ('admin/edit_post.html', menu=menu, form=form, post = post)
-
 
 @admin.route('/list_users')
 def list_users():

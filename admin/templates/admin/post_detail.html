@@ -15,4 +15,22 @@
     <form method="POST" action="{{ url_for('admin.delete_post', post_id = post.id) }}">
         <button> Удалить пост </button>
     </form>
+
+<h2> Комментарии к посту: </h2>
+    <ul>
+        {% for comment, user in comments %}
+        <li>
+            <h3>{{ user.user_login }} </h3>
+            <p> {{ comment.text }} </p>
+            <p> {{ comment.created_at }} </p>
+            <p></p>
+        
+        <form method="POST" action="{{ url_for('admin.delete_comment', comment_id = comment.id) }}">
+        <button> Удалить комментарий </button>
+        </form>
+
+        </li>
+        {% endfor %}
+
+    </ul>
 {% endblock %}

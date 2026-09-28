@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block content %}
+{{ super() }}
+
+<div class="panel" style="max-width: 600px; margin: 0 auto;">
+    <h2 style="text-align: center; border: none;">✏️ Редактирование профиля</h2>
+
+    <!-- ===== FLASH-СООБЩЕНИЯ ===== -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                    <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('edit_profile', user_id=user.id) }}" class="edit-profile-form">
+        {{ form.hidden_tag() }}
+
+        <!-- ===== НИКНЕЙМ ===== -->
+        <div class="form-group">
+            {{ form.nickname.label(class="form-label") }}
+            {% if form.nickname.errors %}
+                {{ form.nickname(class="form-control invalid", placeholder="Введите ваш никнейм") }}
+                <span class="invalid-feedback">
+                    {% for error in form.nickname.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </span>
+            {% else %}
+                {{ form.nickname(class="form-control", placeholder="Введите ваш никнейм") }}
+            {% endif %}
+        </div>
+
+        <!-- ===== ТЕКУЩИЙ ПАРОЛЬ ===== -->
+        <div class="form-group">
+            {{ form.password.label(class="form-label") }}
+            {% if form.password.errors %}
+                {{ form.password(class="form-control invalid", placeholder="Введите текущий пароль") }}
+                <span class="invalid-feedback">
+                    {% for error in form.password.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </span>
+            {% else %}
+                {{ form.password(class="form-control", placeholder="Введите текущий пароль") }}
+            {% endif %}
+        </div>
+
+        <!-- ===== НОВЫЙ ПАРОЛЬ ===== -->
+        <div class="form-group">
+            {{ form.new_password.label(class="form-label") }}
+            {% if form.new_password.errors %}
+                {{ form.new_password(class="form-control invalid", placeholder="Введите новый пароль") }}
+                <span class="invalid-feedback">
+                    {% for error in form.new_password.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </span>
+            {% else %}
+                {{ form.new_password(class="form-control", placeholder="Введите новый пароль") }}
+            {% endif %}
+        </div>
+
+        <!-- ===== ПОВТОР НОВОГО ПАРОЛЯ ===== -->
+        <div class="form-group">
+            {{ form.repeat_new_password.label(class="form-label") }}
+            {% if form.repeat_new_password.errors %}
+                {{ form.repeat_new_password(class="form-control invalid", placeholder="Повторите новый пароль") }}
+                <span class="invalid-feedback">
+                    {% for error in form.repeat_new_password.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </span>
+            {% else %}
+                {{ form.repeat_new_password(class="form-control", placeholder="Повторите новый пароль") }}
+            {% endif %}
+        </div>
+
+        <!-- ===== КНОПКИ ===== -->
+        <div style="display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap;">
+            {{ form.submit(class="btn btn-gold", style="flex: 1;") }}
+            <a href="{{ url_for('profile', username=user.user_login) }}" class="btn" style="flex: 0.5; text-align: center;">⬅ Назад</a>
+        </div>
+    </form>
+</div>
+
+<!-- ===== ПОДСКАЗКА ===== -->
+<div class="panel panel-dark" style="max-width: 600px; margin: 20px auto 0; text-align: center;">
+    <p style="color: var(--text-secondary); font-size: 0.85em; font-style: italic;">
+        "Измени себя — и Долина изменится вместе с тобой."
+    </p>
+</div>
+
+{% endblock %}

@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, EmailField, PasswordField, BooleanField, SubmitField, TextAreaField     
-from wtforms.validators import DataRequired, Email, EqualTo, Length
+from wtforms.validators import DataRequired, Email, EqualTo, Length, Optional
 
 #users
 class LoginForm(FlaskForm):
@@ -33,3 +33,11 @@ class EditForm(FlaskForm):
     post_title = StringField('Заголовок: ', validators=[DataRequired(), Length(min=4, max=10_000)])
     post_content = TextAreaField('Текст: ', validators=[DataRequired(), Length(min=4, max=10_000)])
     submit = SubmitField('Сохранить')
+    
+class EditProfile(FlaskForm):
+    nickname = StringField('Ваш никнейм:', validators=[DataRequired(), Length(min=4, max=10_000)])
+    password = PasswordField('Введите ваш пароль', validators=[DataRequired()])
+    new_password = PasswordField('Введите новый пароль', validators=[Optional(), Length(min=4, max=30, message='От 4 до 30 символов')])
+    repeat_new_password = PasswordField('Повторите новый пароль', validators=[Optional(), EqualTo('new_password', message='Пароли не совпадают')])
+    submit = SubmitField('Сохранить')
+    

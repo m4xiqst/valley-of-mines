@@ -71,9 +71,9 @@
 
     <!-- Кнопка редактирования (заглушка) -->
     <div style="text-align: center; margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 25px;">
-        <button class="btn btn-gold" onclick="alert('Функция редактирования будет добавлена позже!')">
+        <a href="{{ url_for('edit_profile', user_id = user.id) }}" class="btn btn-gold">
             ✏️ Редактировать профиль
-        </button>
+        </a>
     </div>
 </div>
 

@@ -12,7 +12,7 @@ from werkzeug.utils import secure_filename
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from UserLogin import UserLogin
 from config import DevConfig
-from forms import CommentForm 
+from forms import CommentForm, EditProfile 
 
 from admin.admin import admin
 from auth.auth import auth
@@ -73,9 +73,52 @@ def load_user(user_id):
 
 #профиль
 @app.route('/profile/<username>')
+@login_required
 def profile(username):
     user = Users.query.filter_by(user_login = username).first()
     return render_template('profile.html', username = username, user = user, menu=menu, title = f'Профиль игрока {username}', hero_text = f'Добро пожаловать в Долину Рудников {username}')
+
+@app.route('/edit_profile/<user_id>', methods=['POST', 'GET'])
+@login_required
+def edit_profile(user_id):
+    user = Users.query.get(user_id)
+    if request.method == 'GET':
+        form = EditProfile()
+        form.nickname.data = user.nickname 
+        
+        return render_template('edit_profile.html', menu=menu, title='Редактирование профиля', form = form, user=user)
+    elif request.method == 'POST':
+        
+        form = EditProfile()
+        
+        if form.validate_on_submit():
+            if form.new_password.data:
+                if check_password_hash(user.user_password, form.password.data):
+                    user.nickname = form.nickname.data
+                    user.password = generate_password_hash(form.new_password.data)
+                    
+                    db.session.commit()
+                    
+                else:
+                    flash('Неправильный пароль! Попробуйте снова', category='error')
+                    return redirect(url_for('edit_profile', user_id = user_id))
+            else:
+                if check_password_hash(user.user_password, form.password.data):
+                    user.nickname = form.nickname.data
+                    db.session.commit()
+                    
+                else:
+                    flash('Неправильный пароль! Попробуйте снова', category='error')
+                    return redirect(url_for('edit_profile', user_id = user_id))
+        else:
+            print(f'Ошибки формы: {form.errors}')
+            flash('Некорретный ввод данных. Попробуйте снова', category='error')
+            return redirect(url_for('edit_profile', user_id = user_id))
+        
+        return render_template('edit_profile.html', menu=menu, title='Редактирование профиля', form = form, user=user)
+        
+    
+
 
 # Загружаем аватар
 @app.route('/upload_avatar', methods=['POST', 'GET'])

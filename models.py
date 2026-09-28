@@ -37,6 +37,7 @@ class Users(db.Model):
     created_at = db.Column(db.DateTime, default = lambda: datetime.now(timezone.utc))
     avatar = db.Column(db.String(300), nullable = True)
     is_admin = db.Column(db.Boolean, default=False)
+    nickname = db.Column(db.String(500), nullable = False, default = 'Неизвестный бродяга')
     
 
 class Comments(db.Model):

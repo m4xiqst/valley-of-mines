@@ -43,8 +43,11 @@
         <!-- Никнейм (позже) -->
         <div class="profile-field">
             <label class="profile-label">🏷️ Никнейм</label>
-            <div class="profile-value">Тут будет никнейм персонажа</div>
+            <div class="profile-value"> {{user.nickname}}</div>
         </div>
+
+
+    </div>
         
         <!-- Email -->
         <div class="profile-field">
@@ -64,6 +67,7 @@
             <div class="profile-value">{{ user.created_at.strftime('%d.%m.%Y') if user.created_at else 'Неизвестно' }}</div>
         </div>
     </div>
+
 
     <!-- Кнопка редактирования (заглушка) -->
     <div style="text-align: center; margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 25px;">

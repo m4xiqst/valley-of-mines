@@ -41,3 +41,9 @@ class EditProfile(FlaskForm):
     repeat_new_password = PasswordField('Повторите новый пароль', validators=[Optional(), EqualTo('new_password', message='Пароли не совпадают')])
     submit = SubmitField('Сохранить')
     
+class EditUsers(FlaskForm):
+    user_login = StringField('Логин пользователя', validators=[DataRequired(), Length(min=4, max=100)])
+    user_email = StringField('Имейл пользователя', validators=[DataRequired(), Length(min=4, max=100)])
+    new_password = PasswordField('Новый пароль пользователя', validators=[Optional(), Length(min=4, max=30)])
+    user_nickname = StringField('Никнейм пользователя', validators=[Optional()])
+    submit = SubmitField('Сохранить')

@@ -38,6 +38,11 @@
     </form>
     {% endif %}
 
+    <form method="GET" action="{{ url_for('admin.edit_user', user_id = user.id)}}">
+        <button> Редактировать данные пользователя </button>
+    </form>
+    
+
    
 
 {% endblock %}

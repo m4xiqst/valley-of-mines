@@ -1,0 +1,90 @@
+{% extends 'admin/base_admin.html' %}
+{% block content %}
+{{ super() }}
+
+<div class="panel">
+    <h2>Редактирование пользователя</h2>
+
+    <!-- ===== FLASH-СООБЩЕНИЯ ===== -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                    <button type="button" class="close-btn" onclick="this.parentElement.style.display='none'">×</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('admin.edit_user', user_id=user.id) }}" class="admin-form">
+        {{ form.hidden_tag() }}
+
+        <!-- ===== ЛОГИН ===== -->
+        <div class="form-group">
+            {{ form.user_login.label(class="form-label") }}
+            {% if form.user_login.errors %}
+                {{ form.user_login(class="form-control invalid") }}
+                <span class="invalid-feedback">
+                    {% for error in form.user_login.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </span>
+            {% else %}
+                {{ form.user_login(class="form-control") }}
+            {% endif %}
+        </div>
+
+        <!-- ===== EMAIL ===== -->
+        <div class="form-group">
+            {{ form.user_email.label(class="form-label") }}
+            {% if form.user_email.errors %}
+                {{ form.user_email(class="form-control invalid") }}
+                <span class="invalid-feedback">
+                    {% for error in form.user_email.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </span>
+            {% else %}
+                {{ form.user_email(class="form-control") }}
+            {% endif %}
+        </div>
+
+        <!-- ===== НОВЫЙ ПАРОЛЬ ===== -->
+        <div class="form-group">
+            {{ form.new_password.label(class="form-label") }}
+            {% if form.new_password.errors %}
+                {{ form.new_password(class="form-control invalid", placeholder="Оставьте пустым, чтобы не менять") }}
+                <span class="invalid-feedback">
+                    {% for error in form.new_password.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </span>
+            {% else %}
+                {{ form.new_password(class="form-control", placeholder="Оставьте пустым, чтобы не менять") }}
+            {% endif %}
+        </div>
+
+        <!-- ===== НИКНЕЙМ ===== -->
+        <div class="form-group">
+            {{ form.user_nickname.label(class="form-label") }}
+            {% if form.user_nickname.errors %}
+                {{ form.user_nickname(class="form-control invalid") }}
+                <span class="invalid-feedback">
+                    {% for error in form.user_nickname.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </span>
+            {% else %}
+                {{ form.user_nickname(class="form-control") }}
+            {% endif %}
+        </div>
+
+        <!-- ===== КНОПКИ ===== -->
+        <div style="display: flex; gap: 15px; margin-top: 25px; flex-wrap: wrap;">
+            {{ form.submit(class="btn btn-gold", style="flex: 1;") }}
+            <a href="{{ url_for('admin.list_users') }}" class="btn" style="flex: 0.5; text-align: center;">⬅ Назад</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

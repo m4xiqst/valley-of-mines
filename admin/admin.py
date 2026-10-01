@@ -2,8 +2,8 @@ from flask import Blueprint, request, redirect, render_template, session, flash,
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from UserLogin import UserLogin
 from models import Posts, Users, Comments, db
-from forms import LoginAdmin, EditForm
-from werkzeug.security import check_password_hash
+from forms import LoginAdmin, EditForm, EditUsers
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 admin = Blueprint('admin', __name__, template_folder='templates', static_folder='static')
@@ -156,6 +156,43 @@ def show_user(user_id):
             print('Пользователь не найден')
         
         return render_template('admin/user_detail.html', menu=menu, user=user)
+    
+    
+
+@admin.route('/edit_user/<user_id>', methods=['POST', 'GET'])
+def edit_user(user_id):
+    user = Users.query.get(user_id)
+    
+    form = EditUsers()
+    
+    
+    if request.method == 'GET':
+        form.user_login.data = user.user_login
+        form.user_email.data = user.user_email 
+        form.new_password.data = None
+        form.user_nickname.data = user.nickname
+        
+        return render_template('admin/edit_user.html', menu=menu, user=user, form = form)
+    elif request.method == 'POST':
+        if form.validate_on_submit():
+            
+            user.user_login = form.user_login.data
+            user.user_email = form.user_email.data
+            user.nickname = form.user_nickname.data
+            
+            if form.new_password.data:
+                user.user_password = generate_password_hash(form.new_password.data)
+     
+            db.session.commit() 
+            
+            flash('Данные пользователя успешно изменены')
+            return redirect(url_for('.list_users'))     
+        else:
+            flash('Проверьте правильность ввода', category='error')
+    
+    return render_template('admin/edit_user.html', menu=menu, user=user, form = form)
+    
+    
 
 @admin.route('/make_admin/<user_id>', methods=['POST'])
 def make_admin(user_id):

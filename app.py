@@ -49,9 +49,19 @@ with app.app_context():
 @app.route('/')
 def index():
     
-    posts_lists = Posts.query.all()
+    page = request.args.get('page', 1, type=int)
     
-    return render_template('index.html', title = 'Готика: Долина Рудников. Главная страница', menu = menu, hero_text = 'Добро пожаловать в долину рудников!', posts = posts_lists)
+    take_pages = 10
+    
+    offset = (page - 1) * take_pages
+    
+    posts_list = Posts.query.limit(take_pages).offset(offset).all()
+    
+    count = Posts.query.count()
+    
+    total_pages = (count + take_pages - 1) // take_pages
+
+    return render_template('index.html', title = 'Готика: Долина Рудников. Главная страница', menu = menu, hero_text = 'Добро пожаловать в долину рудников!', page = page, posts = posts_list, total_pages = total_pages)
 
        
 # выход из профиля

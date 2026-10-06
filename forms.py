@@ -47,3 +47,5 @@ class EditUsers(FlaskForm):
     new_password = PasswordField('Новый пароль пользователя', validators=[Optional(), Length(min=4, max=30)])
     user_nickname = StringField('Никнейм пользователя', validators=[Optional()])
     submit = SubmitField('Сохранить')
+    
+    
